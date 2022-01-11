@@ -30,7 +30,7 @@ Users should be able to:
 
 ### Links
 
-- Live Site URL: [Add live site URL here](https://mitch-webdev.github.io/technical-documentation-page/)
+- Live Site URL: [GitHub Pages](https://mitch-webdev.github.io/technical-documentation-page/)
 
 ## My process
 
