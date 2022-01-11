@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Technical Documentation Page Project on Linux</title>
+        <link rel="stylesheet" type="text/css" href="./css/style.css" />
+        <link rel="shortcut icon" href="images/favicon-32x32.png" type="image/x-icon">
+        <script src="https://kit.fontawesome.com/e303d5046d.js" crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <nav id="navbar">
+            <header><a href="#" id="linux-header"><i class="fab fa-ubuntu"></i> Linux</a></header>
+            <ul>
+                <hr class="divider">
+                <li><a class="nav-link" href="#introduction">Introduction</a></li>
+                <hr class="divider">
+                <li><a class="nav-link" href="#boot_process">Boot Process</a></li>
+                <hr class="divider">
+                <li><a class="nav-link" href="#disk_management">Disk Management</a></li>
+                <hr class="divider">
+                <li><a class="nav-link" href="#processes_and_job_control">Processes and Job Control</a></li>
+                <hr class="divider">
+                <li><a class="nav-link" href="#shell_scripting">Shell Scripting</a></li>
+                <hr class="divider">
+                <li><a class="nav-link" href="#lvm_-_logical_volume_manager">LVM - Logical Volume Manager</a></li>
+                <hr class="divider">
+                <li><a class="nav-link" href="#user_management">User Management</a></li>
+                <hr class="divider">
+                <li><a class="nav-link" href="#networking">Networking</a></li>
+                <hr class="divider">
+                <li><a class="nav-link" href="#linux_permissions">Linux Permissions</a></li>
+                <hr class="divider">
+                <li><a class="nav-link" href="#references">References</a></li>
+            </ul>
+        </nav>
+        <main id="main-doc">
+            <section class="main-section" id="introduction">
+                <header>Introduction</header>
+                <p>Ubuntu is a complete Linux operating system, freely available with both community and professional support. The Ubuntu community is built on the ideas enshrined in the Ubuntu Manifesto: that software should be available free of charge, that software tools should be usable by people in their local language and despite any disabilities, and that people should have the freedom to customize and alter their software in whatever way they see fit.</p>
+                <ul>
+                    <li>Ubuntu <em>will always be free of charge</em>, and there is no extra fee for the “enterprise edition”, we make our very best work available to everyone on the same Free terms.</li>
+                    <li>Ubuntu includes the <em>very best in translations and accessibility infrastructure</em> that the Free Software community has to offer, to make Ubuntu usable by as many people as possible.</li>
+                </ul>
+                <div class="main-divider">
+                    <hr>
+                </div>
+            </section>
+            <section class="main-section" id="boot_process">
+                <header>Boot Process</header>
+                <h2>GRUB - Grand Unified Bootloader</h2>
+                <p>The boot loader is responsible for starting the operating system at startup. If you were to have different operating systems installed on a machine, this is where you would choose which operating system to start. During boot process, a bunch of messages will be displayed on the screen and will allow you to interrupt the boot process if needed. You can also tell the boat loader to pass different boot option to the operating system.</p><br>
+                <h2>Initial RAM Disk</h2>
+                <p>Abbreviated <a id="links" href="https://developer.ibm.com/articles/l-initrd/" target="_blank">initrd</a>, this is a temporary filesystem that is loaded into memory from the disk when the system boots. This filesystem can contain helpers that perform hardware detection and load the necessary modules like drivers.</p><br>
+                <h2>Kernel Ring Buffer</h2>
+                <p>The Kernel Ring Buffer contains messages from the Linux kernel. A ring buffer is a data structure that is always the same size. Once the buffer is completely full, all the messages will be discarded when new message arrive.</p>
+                <p>To see the content of the content of the Kernel Ring Buffer, use this command:</p>
+                <ul>
+                    <li><code id="custom-style-word">dmesg</code></li>
+                </ul>
+                <br>
+                <p>Messages location:</p>
+                <ul>
+                    <li><code id="custom-style-word">/var/log/dmseg</code></li>
+                </ul>
+                <br>
+                <p>In the /var/log/dmesg directory, you will be able to look at the log files that fly by during Linux boot process.</p>
+                <br>
+                <p>To wrap-up this boot process section, here are a few useful reboot and shutdown commands you can enter in your Linux terminal.</p>
+                <ul>
+                    <li><code id="custom-style-word">shutdown -r 22:00 "rebooting!"</code> - Shuts down the system at 10:00 PM with the message rebooting!</li>
+                    <li><code id="custom-style-word">shutdown -r +5 "rebooting soon!"</code> - Shuts downs the system in 5 minutes with the message rebooting soon! </li>
+                    <li><code id="custom-style-word">shutdown -r now</code> - Shuts down the system right now without message</li>
+                    <li><code id="custom-style-word">reboot</code> - Reboots the system</li>
+                </ul>
+                <div class="main-divider">
+                    <hr>
+                </div>
+            </section>
+            <section class="main-section" id="disk_management">
+                <header>Disk Management</header>
+                <h2>Partitions</h2>
+                <p>When a disk or storage device is partitioned, it is divided into different parts. Partitioning a disk allows you to divide different sectons on the disk to use them for different purposes. For example, we could create 4 partitions and allocate the first part for the operating system, a second partition would then be used for all application data, the third for the user data, and the last partition could be used for swap space. Of course, This is an example and the partitions can be allocated in different way. Having separate partitions is a way to prevent a part of the system to affect another part of the system. A partition dedicated for user home directories for example would prevent a user from filling the entire disk and interfer with the normal operation of the operating system. </p>
+                <p>This command will show you information on the disk space being used</p>
+                <ul>
+                    <li><code id="custom-style-word">df -h</code> - Will display information about disk space used on all disks from that system</li>
+                </ul>
+                <br>
+                <h2>Mount Points</h2>
+                <p>A mount point is simply a directory that is used to access the data on a particular partition. </p>
+                <ul>
+                    <li>There will always be at least a /(slash) as a mount point</li>
+                    <li>Any additional partitons will be mounted on mount points below / in the directory tree.</li>
+                    <li>If you allocated a partition for user home directories, that partition would be mounted at /home.</li>
+                </ul>
+                <br>
+                <p>Here is how to mount partitions to a directory</p>
+                <ul>
+                    <li><code id="custom-style-word">mount /dev/sdb3 /home</code> - You will mount the partition located at /dev/sdb3 to the directory /home</li>
+                </ul>
+                <br>
+                <p>To make sure that mount point remains after reboot, it needs to be entered in /etc/fstab file.</p>
+                <br>
+                <p>To unmount a partition, simply use this command:</p>
+                <ul>
+                    <li><code id="custom-style-word">umount /home</code> - Here we used the mount point itself</li>
+                    <li><code id="custom-style-word">umount /dev/sdb3</code> - And there we used the device path</li>
+                </ul>
+                <br>
+                <h2>fdisk</h2>
+                <p>The fdisk utility is used to create and modify partitions on a disk.</p>
+                <p>Example of an fdisk command:</p>
+                <ul>
+                    <li><code id="custom-style-word">fdisk /path/to/disk</code> - Will open the fdisk utility to manage partitions on that disk</li>
+                </ul>
+                <div class="main-divider">
+                    <hr>
+                </div>
+            </section>
+            <section class="main-section" id="processes_and_job_control">
+                <header>Processes and Job Control</header>
+                <h2>Processes</h2>
+                <p>To display the currently running processes on the system, the use of the <strong>ps</strong> command is coming into play.</p>
+                <table style="width: 60%;">
+                    <caption>ps Command Options</caption>
+                    <tr>
+                        <th>Option</th>
+                        <th>Definition</th>
+                    </tr>
+                    <tr>
+                        <td>-e</td>
+                        <td>Display all processes</td>
+                    </tr>
+                    <tr>
+                        <td>-f</td>
+                        <td>Full format listing</td>
+                    </tr>
+                    <tr>
+                        <td>-u username</td>
+                        <td>Display username's processes</td>
+                    </tr>
+                    <tr>
+                        <td>-p pid</td>
+                        <td>Display information for PID</td>
+                    </tr>
+                    <tr>
+                        <td>top</td>
+                        <td>Interactive process viewer</td>
+                    </tr>
+                </table>
+                <br>
+                <table style="width: 60%;">
+                    <caption>Background and foreground processes</caption>
+                    <tr>
+                        <th>Command</th>
+                        <th>Definition</th>
+                    </tr>
+                    <tr>
+                        <td id="custom-style-word">command &</td>
+                        <td>Will start the given command in the background</td>
+                    </tr>
+                    <tr>
+                        <td id="custom-style-word">Ctrl-c</td>
+                        <td>Kill the foreground process</td>
+                    </tr>
+                    <tr>
+                        <td id="custom-style-word">Ctrl-z</td>
+                        <td>Suspend the foreground process</td>
+                    </tr>
+                </table>
+                <br>
+                <h2>Cron jobs</h2>
+                <p>The cron job utility, is a task scheduler on Unix operating systems. Users who set up and maintain software environments use cron to schedule jobs (commands or shell scripts) to run periodically at fixed times, dates, or intervals. Cron is used for:</p>
+                <ul>
+                    <li>Scheduling and automating tasks</li>
+                </ul>
+                <br>
+                <table style="width: 60%;">
+                    <caption>Crontab Format</caption>
+                    <tr>
+                        <th>Minute (0-59)</th>
+                        <th>Hour (0-23)</th>
+                        <th>Day of the Month (1-31)</th>
+                        <th>Month of the Year (1-12)</th>
+                        <th>Day of the Week (0-6)</th>
+                    </tr>
+                    <tr>
+                        <td>*</td>
+                        <td>*</td>
+                        <td>*</td>
+                        <td>*</td>
+                        <td>*</td>
+                    </tr>
+                    <tr>
+                        <td colspan="5">The job below will be run every day at 11:00 PM</td>
+                    </tr>
+                    <tr>
+                        <td>30</td>
+                        <td>23</td>
+                        <td>*</td>
+                        <td>*</td>
+                        <td>*</td>
+                    </tr>
+                    <tr>
+                        <td colspan="5">The job below will be run every first of the month at 10:00 AM</td>
+                    </tr>
+                    <tr>
+                        <td>10</td>
+                        <td>00</td>
+                        <td>1</td>
+                        <td>*</td>
+                        <td>*</td>
+                    </tr>
+                </table>
+                <br>
+                <div class="main-divider">
+                    <hr>
+                </div>
+            </section>
+            <section class="main-section" id="shell_scripting">
+                <header>Shell Scripting</header>
+                <p>A script is a file that can contain multiple commands. Any command that is accepted in the command line can be added into a script and will be executed by the interpreter. This is typically used to automate tasks.</p>
+                <p>This is what a script looks like:</p>
+                <p>
+                    <pre>
+                        <code>
+  #!/bin/bash
+  echo "Bash Scripting is a lot of fun!"
+                        </code>
+                    </pre>
+                </p>
+                    <br>
+                <p>Shell scripts can of course take variables</p>
+                <ul>
+                    <li>Variables are case-sensitive</li>
+                    <li>By convention, variables are uppercase</li>
+                </ul>
+                <p>
+                    <pre>
+                        <code>
+  VARIABLE_NAME="Value"
+                        </code>
+                    </pre>
+                </p>
+                <br>
+                <p>Example of variable usage in shell script:</p>
+                <p><pre>
+                    <code>
+  #!/bin/bash
+  MY_SCRIPT="awesome!"
+  echo "I think that shell scripting is $MY_SCRIPT"
+                    </code></pre></p>
+                    <br>
+                    <p>Output - I think that shell scripting is awesome!</p>
+                <div class="main-divider">
+                    <hr>
+                </div>
+            </section>
+            <section class="main-section" id="lvm_-_logical_volume_manager">
+                <header>LVM - Logical Volume Manager</header>
+                <p>In Linux, Logical Volume Manager (LVM) is a device mapper framework that provides logical volume management for the Linux kernel. Most modern Linux distributions are LVM-aware to the point of being able to have their root file systems on a logical volume.</p>
+                <p>Why would you use LVM?</p>
+                <p>LVM allows you to create file systems that extend across multliple storage devices. You can aggregate multiple storage devices into a single logical volume.</p>
+                <ul>
+                    <li>Easily resize storage while still online</li>
+                    <li>Data can be migrated easily from one device to another while online</li>
+                    <li>Humand-readable device names of your choice can be used</li>
+                </ul>
+                <br>
+                <h2>Logical Volume Creation Process</h2>
+                <ol>
+                    <li>Create one or more physical volumes</li>
+                    <li>Create a volume group from those or more physical volumes</li>
+                    <li>Create one or more logical volumes from the volume group</li>
+                </ol>
+                <div class="main-divider">
+                    <hr>
+                </div>
+            </section>
+            <section class="main-section" id="user_management">
+                <header>User Management</header>
+                <p>Linux is a multi-user operating system. Multiple accounts can exist on a system and can be used at the same time.</p>
+                <p>Each account includes the following:</p>
+                <ul>
+                    <li>Username (or Login ID)</li>
+                    <li>UID (User ID) - This is a unique number</li>
+                    <li>Default group</li>
+                    <li>Comments</li>
+                    <li>Shell</li>
+                    <li>Home Directory</li>
+                </ul>
+                <br>
+                <p>All the information above is stored in the <strong>/etc/passwd</strong> file.</p>
+                <p>Here is an extract:</p>
+                <p><code id="custom-style-word">michael:x:1000:1000:,,,:/home/michael:/bin/bash</code></p>
+                <br>
+                <table style="width: 60%;">
+                    <caption>Breakdown of the passwd file</caption>
+                    <tr>
+                        <th>Username</th>
+                        <th>Password</th>
+                        <th>User ID</th>
+                        <th>Default group ID</th>
+                        
+                    </tr>
+                    <tr>
+                        <td>michael</td>
+                        <td>x</td>
+                        <td>1000</td>
+                        <td>1000</td>
+                    </tr>
+                    <tr>
+                        <th>Comments</th>
+                        <th>Home Directory</th>
+                        <th colspan="2">Shell</th>
+                    </tr>
+                    <tr>
+                        <td>,,,</td>
+                        <td>/home/michael</td>
+                        <td colspan="2">/bin/bash</td>
+                    </tr>
+                </table>
+                <br>
+                <p>Let's create a user. To create a new user, enter the following command:</p>
+                <p><code id="custom-style-word">useradd -c "John Doe" -m -s /bin/bash john</code></p>
+                <br>
+                <table style="width: 60%;">
+                    <caption>Command syntax</caption>
+                    <tr>
+                        <th>Command</th>
+                        <th>Add a comment</th>
+                        <th>Create the home directory</th>
+                    </tr>
+                    <tr>
+                        <td>useradd</td>
+                        <td>-c "John Doe"</td>
+                        <td>-m</td>
+                    </tr>
+                    <tr>
+                        <th>The path to user's shell</th>
+                        <th colspan="2">Desired username</th>
+                    </tr>
+                    <tr>
+                        <td>-s /bin/bash</td>
+                        <td colspan="2">john</td>
+                    </tr>
+                </table>
+                <br>
+                <p>Now let's set a password to that user.</p>
+                <p><code id="custom-style-word">passwd john</code></p>
+                <p>You will be prompted to enter the desired password for that user. Once entered, the message <strong>"password updated successfully will be displayed"</strong>.</p>
+                <div class="main-divider">
+                    <hr>
+                </div>
+            </section>
+            <section class="main-section" id="networking">
+                <header>Networking</header>
+                <h2>IP Address</h2>
+                <p>To show the current IP address or all the IP addresses in use on a Linux system, enter the following command:</p>
+                <ul>
+                    <li><code id="custom-style-word">ip address</code>, <code id="custom-style-word">ip a</code> or <code id="custom-style-word">ip addr</code> - This will display all IP addresses used on the system</li>
+                </ul>
+                <br>
+                <h2>Hostname</h2>
+                <p>The following commands will display or change the current device hostname. Let's how to do that.</p>
+                <ul>
+                    <li><code id="custom-style-word">hostname</code> - Displays the current hostname of system</li>
+                    <li><code id="custom-style-word">hostname desiredhostname</code> - Will temporarily set the desired hostname until next reboot</li>
+                    <li><code id="custom-style-word">hostname 'desiredhostname' > /etc/hostname</code> - Will permantently define desired hostname to the current device</li>
+                </ul>
+                <br>
+                <h2>DNS</h2>
+                <p>The following tools will help you lookup or resolve DNS names or IP addresses.</p>
+                <ul>
+                    <li><code id="custom-style-word">host www.google.com or 172.217.168.46</code> - Will display DNS information about the domain name google.com or the IP address 172.217.168.46</li>
+                    <li><code id="custom-style-word">dig www.google.com</code> - Will also display DNS information like DNS Records of the argument given</li>
+                </ul>
+                <div class="main-divider">
+                    <hr>
+                </div>
+            </section>
+            <section class="main-section" id="linux_permissions">
+                <header>Linux Permissions</header>
+                <p>Linux permissions are defined in the following way:</p>
+                <br>
+                <table style="width: 50%;">
+                    <caption>File symbols</caption>
+                    <tr>
+                        <th style="width: 20%;">Symbol</th>
+                        <th>Type</th>
+                        <th>Example</th>
+                    </tr>
+                    <tr>
+                        <td>-</td>
+                        <td>Regular File</td>
+                        <td id="custom-style-word">-rw-rw-r--</td>
+                    </tr>
+                    <tr>
+                        <td>d</td>
+                        <td>Directory</td>
+                        <td id="custom-style-word">drwxr-xr-x</td>
+                    </tr>
+                    <tr>
+                        <td>l</td>
+                        <td>Symbolic link</td>
+                        <td id="custom-style-word">lrwxr-xr-x</td>
+                    </tr>
+                </table>
+                <br>
+                <table style="width: 50%;">
+                    <caption>Permission symbols</caption>
+                    <tr>
+                        <th style="width: 20%;">Symbol</th>
+                        <th>Permission</th>
+                        <th>Example</th>
+                    </tr>
+                    <tr>
+                        <td>r</td>
+                        <td>Read</td>
+                        <td id="custom-style-word">-r--r--r--</td>
+                    </tr>
+                    <tr>
+                        <td>w</td>
+                        <td>Write</td>
+                        <td id="custom-style-word">---w--w--w-</td>
+                    </tr>
+                    <tr>
+                        <td>x</td>
+                        <td>Execute</td>
+                        <td id="custom-style-word">---x--x--x</td>
+                    </tr>
+                </table>
+                <br>
+                <table style="width: 30%">
+                    <caption>Permission Categories</caption>
+                    <tr>
+                        <th style="width: 30%;">Symbol</th>
+                        <th>Category</th>
+                    </tr>
+                    <tr>
+                        <td>u</td>
+                        <td>User</td>
+                    </tr>
+                    <tr>
+                        <td>g</td>
+                        <td>Group</td>
+                    </tr>
+                    <tr>
+                        <td>o</td>
+                        <td>Other</td>
+                    </tr>
+                    <tr>
+                        <td>a</td>
+                        <td>All</td>
+                    </tr>
+                </table>
+                <br>
+                <table style="width: 80%;">
+                    <caption>Set permissions</caption>
+                    <tr>
+                        <th>Item</th>
+                        <th style="width: 20%;">Meaning</th>
+                        <th colspan="2">Example</th>
+                    </tr>
+                    <tr>
+                        <td>chmod</td>
+                        <td>Change mode command</td>
+                        <td rowspan="4" id="custom-style-word">chmod u+w testfile.txt</td>
+                        <td rowspan="4">Adds write permission to user for testfile.txt</td>
+                    </tr>
+                    <tr>
+                        <td>ugoa</td>
+                        <td>User Category - User, group, other, all</td>
+                    </tr>
+                    <tr>
+                        <td>+-=</td>
+                        <td>Add, substract or set permissions</td>
+                    </tr>
+                    <tr>
+                        <td>rwx</td>
+                        <td>Read, Write, Execute</td>
+                    </tr>
+                </table>
+                <div class="main-divider">
+                    <hr>
+                </div>
+            </section>
+            <section class="main-section" id="references">
+                <header>References</header>
+                <ul>
+                    <li><a id="links" href="https://www.linuxtrainingacademy.com/">Linux Training Academy</a> - Most of the technical information on this page was taken from there</li>
+                    <li><a id="links" href="https://ubuntu.com">Ubuntu</a> - Some of the text found here was copied from Ubuntu website</li>
+                </ul>
+            </section>
+        </main>
+
+        <script src="https://cdn.freecodecamp.org/testable-projects-fcc/v1/bundle.js"></script>
+    </body>
+</html>
